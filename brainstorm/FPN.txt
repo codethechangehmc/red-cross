@@ -1,0 +1,29 @@
+Model Name: FPN (Feature Pyramid Network)
+
+Brief description of how it works:
+FPN is an architecture module that builds a pyramidal hierarchy of feature maps with strong semantics at all scales. It fuses high-level semantic (deep) features with low-level spatial (shallow) features through top-down pathways with lateral connections. The typical flow is: from a backbone CNN we get multiple feature maps at different scales (e.g. from different stages). FPN then upsamples the higher-level maps and adds (via lateral 1×1 conv connections) to the lower-level maps. After merging, each level is refined by additional convolutions to make feature maps useful for detection heads. This allows the detection head to receive feature maps with both fine spatial resolution and rich semantics across scales. 
+
+Why is this appropriate to the task:
+Building attributes vary greatly in scale (small windows, medium doors, large facades). FPN helps the model detect across scales more robustly.
+When combined with Faster R-CNN (or other detection backbones), FPN improves small object detection without major extra cost.
+In the resilience mapping, we can catch both fine detail (window bars, ventilation gaps) and large structural edges.
+We can integrate FPN with spherical-convolution backbones to adapt to 360° input.
+
+
+Pros:
+•	Improves multi-scale detection performance.
+•	Relatively low computational overhead compared to naive multi-scale image pyramids.
+•	Compatible with many backbone architectures; modular.
+•	Strong empirical gains in object detection benchmarks when added to existing detectors.
+
+
+Cons:
+•	Additional complexity in implementation (upsampling, lateral connections).
+•	Slight memory and compute overhead.
+•	Requires careful design of feature map alignment and fusion.
+•	Without adaptation, FPN still expects conventional (planar) feature maps. So we need adaptation for distorted or spherical input.
+
+General thoughts + references/links:
+FPN is now a standard component in many detection pipelines (e.g., Faster R-CNN + FPN, RetinaNet, Mask R-CNN). In our project, combining FPN with spherical convolution layers (SphereConv or SphereNet-style encoders) could yield good detection performance across scales in panoramic imagery.
+
+Original FPN paper: Feature Pyramid Networks for Object Detection (Lin et al., 2017) (https://arxiv.org/abs/1612.03144)
