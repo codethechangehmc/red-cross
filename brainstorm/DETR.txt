@@ -1,0 +1,20 @@
+Model Name: DETR (DEtection TRansformer)
+
+Brief description of how it works: First, a CNN (Convolutional Neural Network) turns the image into a feature map (instead of an image in pixels). Then, DETR flattens the feature map into a sequence with positional information (like where each feature comes from in the image such as top-left or top-right) and then runs it through a transformer encoder and decoder. The encoder runs Multi-Head Self-Attention (MHSA) on each token (small patch of the image) of the flattened feature map in which each token basically becomes a weighted mix of all the other tokens. This is done multiple times in each different head (since it’s multi-head) and each head will have a different relationship like texture, edge continuation, etc which is all linearly combined for each token Then, this goes into a Feed-Forward Network (FFN) where each token now contains a mixed-up context vector to help the model do nonlinear transformations and in the end we have different tokens which each have knowledge about other parts of the image. This happens like 6 more times depending on the number of layers of MHSA and FFN, before it's put in the decoder. The decoder does self-attention and cross-attention with a fixed number of object queries (slot for one object) and then each query’s output goes through a MLP (Multilayer Perceptron) which predicts a class (so like object type like no object, building, tree) and a bounding box (width, height, center_x, etc)
+During training, it uses the Hungarian algorithm to match predictions to ground truth boxes.
+
+Why is this appropriate to the task: I think this could be a good option for our detection model paired with some other inference model like a ViT or a CNN. It looks at the whole image at once which could help when buildings overlap or are weirdly shaped. Since it outputs clean bounding boxes for each unique object in the image, it will pair well with the inference model. 
+
+Pros:
+It understands full scene context because it looks at the whole image at once which could be good for dense urban areas.
+Clean pipeline because it directly outputs fixed-size object sets of our choice like 100 queries, etc, and end-to-end detection without any post-processing or anchor tuning required.
+
+Cons:
+From what I understood, DETR (the basic one) is slow to train but we could use Deformable DETR to overcome that where each query only looks at a few key locations instead of every pixel or Conditional DETR as well.
+Compute-heavy because each feature basically looks at each other feature present in the whole picture so that’s a lot of interactions. Can be fixed using Deformable DETR again which only focuses on key points rather than every pixel feature.
+
+General thoughts + references/links:
+DETR paper: Carion et al., “End-to-End Object Detection with Transformers”: https://arxiv.org/abs/2005.12872
+Deformable DETR (faster & better on small objects): https://arxiv.org/abs/2010.04159
+Official DETR GitHub: https://github.com/facebookresearch/detr
+Official Deformable DETR GitHub: https://github.com/fundamentalvision/Deformable-DETR
