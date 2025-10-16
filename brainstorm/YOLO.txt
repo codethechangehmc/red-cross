@@ -1,0 +1,21 @@
+Name: YOLO (You Only Look Once)
+
+Brief description of how it works:
+A single CNN that simultaneously predicts multiple bounding boxes and class probabilities for each bounding box
+*   Grid Division --> Input image is divided into an S x S grid, where each grid cell is responsible for detecting objects whose center falls within it
+*   Bounding Box Prediction --> Each grid cell predicts B bounding boxes, each with a confidence score reflecting the probability that a bounding box contains an object and the accuracy of the bounding box
+*   Class Prediction --> Each grid cell predicts the class probabilities C for the object, given that an object exists in that grid cell
+*   Final Predictions --> YOLO combines these predictions to generate the final detected objects, applying non-max suppression to eliminate redundant bounding boxes
+
+Why is this appropriate to the task:
+With YOLO being great at both speed and accuracy, it is optimal for real-time applications where swift and accurate object detection is crucial.
+While real-time detection may not be necesary for this specific project, it is something to keep in the back of our minds for if this project evolves. 
+
+Pros:
+*	Best in terms of tradeoff between speed (processes input in a single pass) and accuracy
+*   Trained end-to-end directly on the detection task (no seperate training for selective search)
+
+Cons:
+*	Many versions...up to YOLOv8, thus we would need to decide which YOLO version to use
+
+YOLOv8 paper: What is YOLOv8: An In-Depth Exploration of the Internal Features of the Next-Generation Object Detector (Yaseen, 2024) (https://arxiv.org/abs/2408.15857)

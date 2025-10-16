@@ -1,0 +1,35 @@
+Model Name: FRCNN (Faster Region-Based Convolutional Neural Network)
+
+Brief description of how it works:
+Stage 1: Region Proposal Network (RPN):
+*   Backbone Network --> image passes through a convolutional network (like ResNet or VGG16) to extracts important features from image and create a feature map
+*   Anchors --> boxes of different sizes and shapes placed over points on the feature map representing a possible object location
+*   Classification of Anchors --> RPN predicts whether the anchor is background/foreground
+*   Bounding Box Refinement --> refines the anchor boxes to better align them with the actual objects by predicting offsets
+
+Stage 2: Object Classification and Box Refinement
+*   Region Proposals --> RPN returns region proposals (refined boxes that likely contain objects)
+*   ROI Pooling --> resizes all region proposals to a fixed size by dividing them into smaller regions and applying pooling, making them uniform
+*   Object Classification --> each region proposal is passed through a small network to predict the category (e.g., dog, car, etc.) of the object inside it
+*   Bounding Box Refinement (Again) --> region proposals are refined again to better match the actual objects, using offsets
+*   Multi-task Learning --> the network in stage 2 learns both to predict object categories and refine bounding boxes at the same time
+
+Stage 3: Prediction 
+*   Top Region Proposals --> only the top proposals (with the highest classification scores) are passed to the second stage
+*   Final Predictions --> second stage predicts the final categories and bounding boxes
+*   Non-Max Suppression --> remove duplicate or overlapping boxes, keeping only the best ones
+
+Why is this appropriate to the task:
+Faster R-CNN, while a bit outdated (2015), is often still considered a benchmark in object detection, thus, providing a good jump-off point for our research.
+
+Pros:
+*   Everything is trained end to end using a unified network
+*   Improves upon Fast R-CNN by using a RPN to generate ROIs, which is much faster than the selective search algorithm used in R-CNN and Fast R-CNN
+*   Uses the feature maps of the CNN to predict object bounds
+
+
+Cons:
+*   A bit outdated (2015)
+*   May struggle with occlusions, distortions, illumination changes, background clutter (which we will encounter a lot from 360 GoPro imagery)
+
+Faster R-CNN paper: Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks (Ren et al., 2015) (https://arxiv.org/abs/1506.01497)
