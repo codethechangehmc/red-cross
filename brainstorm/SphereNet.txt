@@ -1,0 +1,23 @@
+Model Name: SphereNet
+
+Brief description of how it works:
+SphereNet modifies standard CNN convolutions to operate directly on the sphere. Instead of using a flat kernel grid, it warps convolutional filters around the sphere’s surface, adjusting sampling locations to cancel out equirectangular distortions. This allows it to process omnidirectional (360°) images without losing geometric consistency. It can use existing CNN backbones (like VGG or SSD) by replacing the convolution and pooling layers with spherical versions
+
+Why is this appropriate to the task:
+The Red Cross 360° GoPro imagery will contain significant distortions near the poles and edges. SphereNet directly accounts for these, making it ideal for detecting buildings, estimating height and structural attributes, and identifying damage or vulnerability indicators from spherical city views.
+
+Pros:
+•	Corrects projection distortions automatically.
+•	Can reuse pretrained CNN weights (transfer learning).
+•	Works for both classification and object detection (via Sphere-SSD).
+•	Maintains end-to-end differentiability and training pipeline.
+
+Cons:
+•	Slight computational overhead due to real-valued resampling/interpolation.
+•	Not fully rotation invariant (assumes upright horizon).
+•	Implementation more complex than standard CNNs.
+
+General thoughts + references/links:
+SphereNet is foundational for any spherical imagery analysis. For the Red Cross task, it can serve as the feature extractor or encoder before mapping building attributes.
+
+Reference: Coors, B., Condurache, A. P., & Geiger, A. SphereNet: Learning Spherical Representations for Detection and Classification in Omnidirectional Images. ECCV 2018. (https://openaccess.thecvf.com/content_ECCV_2018/html/Benjamin_Coors_SphereNet_Learning_Spherical_ECCV_2018_paper.html)

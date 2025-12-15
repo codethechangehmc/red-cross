@@ -1,0 +1,28 @@
+Model Name: 
+- Grounding DINO + SAM via spherical projection
+
+Brief description of how it works:
+- The raw LiDAR point cloud is projected into a panoramic 2D image using angular mapping so that multiple 3D points can map to the same pixel.
+- A language-guided detector takes a text prompt such as "buildings" and returns bounding boxes for regions likely corresponding to buildings.
+- Bounding boxes are passed to SAM, which performs fine-grained segmentation to extract building masks.
+- The segmented mask in 2D is mapped back to the original 3D point cloud using stored pixel-point mappings.
+
+Why is this appropriate to the task:
+- Can work without labeled 3D building data,
+- 360° spherical projections can match the spatial continuity of real-world scanning (some applications discussed in literature review include mobile LiDAR)
+- Language-guided prompts allow further semantic expansion later like "damaged facade",”broken window", etc making it ideal for vulnerability mapping
+- SAM’s high-resolution segmentation is also well suited for facade boundary refinement for buildings, which important for structural vulnerability assessment.
+
+Pros:
+- Zero shot, so  no training or fine-tuning required
+- Flexibility with language prompts (can be used for vulnerability descriptors later on) 
+- Scales well with 2D but also compatible with 360 degree workflows (with LiDAR data and panoramic capture formats) 
+- High segmentation fidelity due to SAM
+
+Cons: 
+- In initial testing, a pixel can correspond to multiple 3D points which may lead to false positives 
+- SAM segmentation depends on bounding box localization quality 
+- Model can detect facades but has limited contextual awareness and may not be able to differentiate structural vulnerabilities 
+
+General thoughts + references/links:
+- DINO & SAM Implementation: https://arxiv.org/html/2404.09931v1
