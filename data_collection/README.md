@@ -6,7 +6,7 @@ This folder contains notebooks and scripts used to collect, organize, and docume
 The primary goal of this stage is to build a reproducible data acquisition pipeline that gathers street-level and 360° imagery from the Mapillary API and structures it for downstream computer vision and geospatial analysis.
 
 ## Data Collection
-- Collected **180,000+ images** using the Mapillary API
+- Collected **100,000+ images** using the Mapillary API
 - Queried imagery for disaster-relevant geographic regions
 - Handled API pagination, rate limits, and metadata retrieval
 - Retrieved associated metadata including sequence IDs, timestamps, and camera information
