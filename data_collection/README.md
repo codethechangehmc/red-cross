@@ -50,11 +50,7 @@ The primary goal of this stage is to build a reproducible data acquisition pipel
    *Note: The current implementation expects the token to be provided directly in the notebook. Environment variables are not required.*
 
 
-5. Launch Jupyter and run the notebooks in order:
-
-   ```bash
-   jupyter notebook
-   ```
+5. Launch Jupyter/Google Colab/etc. and run the notebooks in order
 
    Follow the notebooks to collect imagery, retrieve metadata, and organize images by sequence.
 
